@@ -18,7 +18,7 @@ const HomePage = () => {
 			<FetchState isLoading={isLoading} isError={isError} error={error}>
 				<Container>
 					<Row>
-					{categories && categories.map(category => (
+					{categories && categories.map((category) => (
           				
            				 <Col key={category.idCategory}>
            				 <Link to={`/category/${category.strCategory}`}>{category.strCategory}</Link>
