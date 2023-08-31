@@ -1,22 +1,25 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import FetchState from '../../components/FetchState/FetchState';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import OneRepiceService from '../service/OneRepiceSerice';
 
-const fetchRecipeById = async (id) => {
-  const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
-  const data = await response.json();
-  return data.meals[0];
-};
+const oRS = new OneRepiceService()
 
 function RecipePage() {
   const { recipeId } = useParams();
-  const { data: recipe, isLoading, error } = useQuery(['recipe', recipeId], () => fetchRecipeById(recipeId));
+  const { data: recipe, isLoading, isError, error } = useQuery(['recipe', recipeId], () => oRS.fetchRecipeById(recipeId));
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching recipe</div>;
 
   return (
-    <div>
+    <Container>
+      <FetchState isLoading={isLoading} isError={isError} error={error}>
+				<Container>
       {recipe && (
         <div>
           <h2>{recipe.strMeal}</h2>
@@ -35,7 +38,9 @@ function RecipePage() {
           <Link to={`/category/${recipe.strCategory}`}>Retour à la catégorie</Link>
         </div>
       )}
-    </div>
+      </Container>
+			</FetchState>
+    </Container>
   );
 }
 
