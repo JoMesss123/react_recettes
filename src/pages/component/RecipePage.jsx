@@ -7,15 +7,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import OneRepiceService from '../service/OneRepiceSerice';
 
+
 const oRS = new OneRepiceService()
 
 function RecipePage() {
   const { recipeId } = useParams();
   const { data: recipe, isLoading, isError, error } = useQuery(['recipe', recipeId], () => oRS.fetchRecipeById(recipeId));
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error fetching recipe</div>;
-
+ 
   return (
     <Container>
       <FetchState isLoading={isLoading} isError={isError} error={error}>
@@ -35,6 +34,7 @@ function RecipePage() {
           </ul>
           <h3>Instructions:</h3>
           <p>{recipe.strInstructions}</p>
+          
           <Link to={`/category/${recipe.strCategory}`}>Retour à la catégorie</Link>
         </div>
       )}
